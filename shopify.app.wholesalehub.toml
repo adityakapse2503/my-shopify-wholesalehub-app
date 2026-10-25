@@ -2,19 +2,34 @@
 
 client_id = "dd0fa2a5107bd3dd3021c93ff3d71b41"
 name = "vip-discount-sync"
-application_url = "https://example.com"
+application_url = "https://vip-discount-sync.onrender.com"
 embedded = true
-
-[webhooks]
-api_version = "2027-01"
-
-[access_scopes]
-# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_discounts,write_metaobject_definitions,write_metaobjects,write_products"
-
-[auth]
-redirect_urls = [ "https://example.com/api/auth" ]
 
 [build]
 include_config_on_deploy = true
 automatically_update_urls_on_dev = true
+
+[webhooks]
+api_version = "2026-10"
+
+  [[webhooks.subscriptions]]
+  topics = [ "discounts/create", "discounts/update", "discounts/delete" ]
+  uri = "/webhooks"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/uninstalled" ]
+  uri = "/webhooks/app/uninstalled"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "/webhooks/app/scopes_update"
+
+[access_scopes]
+scopes = "read_discounts,write_metaobject_definitions,write_metaobjects,write_products"
+
+[auth]
+redirect_urls = [
+  "https://vip-discount-sync.onrender.com/auth/callback",
+  "https://vip-discount-sync.onrender.com/auth/shopify/callback",
+  "https://vip-discount-sync.onrender.com/api/auth/callback"
+]
